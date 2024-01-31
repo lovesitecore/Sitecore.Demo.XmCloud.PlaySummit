@@ -28,11 +28,7 @@ const doGet = async <T extends ContentSearchWidgetResponseBase = ContentSearchWi
   return widgets.find(({ rfk_id: id }: { rfk_id: string }) => id === widgetId) as T;
 };
 
-export type ContentSearchRequestFilter = {
-  facetId: string;
-  facetValueId: string;
-  type: 'text' | 'range' | 'valueId';
-};
+export type ContentSearchRequestFilter = { facetId: string; facetValueId: string };
 
 export type ContentSearchRequestProps = {
   widgetId: string;

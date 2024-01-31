@@ -4,5 +4,4 @@ export type FacetValueClickedActionPayload = {
   facetIndex: number;
   facetValueIndex: number;
   checked: boolean;
-  type: 'text' | 'range' | 'valueId';
 };

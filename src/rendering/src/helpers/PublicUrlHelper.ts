@@ -1,4 +1,4 @@
-import { getPublicUrl } from '@sitecore-jss/sitecore-jss-nextjs/utils';
+import { getPublicUrl } from '@sitecore-jss/sitecore-jss-nextjs';
 
 export const getPublicAssetUrl = (): string => {
   const DEFAULT_PUBLIC_URL = 'http://localhost:3000';

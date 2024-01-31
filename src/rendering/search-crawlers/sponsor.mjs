@@ -1,11 +1,32 @@
 function extract(request, response) {
   function validateData(data, acceptPageType) {
-    const { query: { path = [] } = {} } = data;
-    return path[1] === acceptPageType;
+    const { query: { path: [pageType] = [] } = {} } = data;
+
+    return pageType === acceptPageType;
   }
 
   function getDisplayNameList(list) {
     return list.map(({ displayName }) => displayName);
+  }
+
+  function getTargetItemsList(obj) {
+    return obj ? obj.targetItems.map(({ name: { value } }) => value) : [];
+  }
+
+  function buildTargetItemsList(list = [], set) {
+    return [...new Set(list.concat(getTargetItemsList(set)))];
+  }
+
+  function extractSessionsData(sessions) {
+    return sessions.reduce(
+      (mem, { rooms, day, timeslots }) => ({
+        ...mem,
+        rooms: buildTargetItemsList(mem.rooms, rooms),
+        days: buildTargetItemsList(mem.days, day),
+        time_slots: buildTargetItemsList(mem.time_slots, timeslots),
+      }),
+      {}
+    );
   }
 
   function processData(data, acceptPageType) {
@@ -29,53 +50,44 @@ function extract(request, response) {
       displayName,
       itemId,
       fields: { Logo, Sessions, Speakers, Level },
+      placeholders: {
+        'headless-main': [
+          {
+            placeholders: {
+              'sxa-sponsor-content': [
+                _,
+                {
+                  fields: {
+                    data: {
+                      contextItem: { sessions },
+                    },
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
     } = data;
 
     const description = $('.section-content .rich-text').text();
-    const {
-      value: {
-        thumbnailsrc: image_thumb_url,
-        src: image_url,
-        alt: imageDescription,
-        'stylelabs-content-id': imageID,
-      } = {},
-    } = Logo;
+    const { value: { thumbnailsrc: image_thumb_url, src: image_url } = {} } = Logo;
     const { value: level } = Level;
     const speakers = getDisplayNameList(Speakers);
 
-    const days = [...new Set([...$('.session-info-date')].map((e) => $(e).text().trim()))];
-    const time_slots = [...new Set([...$('.session-info-time')].map((e) => $(e).text().trim()))];
-    const rooms = [
-      ...new Set(
-        [...$('div.info-col-content > div:nth-child(4) > span:nth-child(2)')].map((e) =>
-          $(e).text().trim()
-        )
-      ),
-    ];
-
     return [
       {
-        description,
-        image_thumb_url,
-        image_url,
-        speakers,
-        level,
-        days,
-        time_slots,
-        rooms,
         type: 'sponsor',
         id: itemId,
         name: displayName,
-        url: urlPath,
-        sessions: getDisplayNameList(Sessions),
-      },
-      {
-        image_url,
+        description,
         image_thumb_url,
-        type: 'photo',
-        name: displayName,
-        id: imageID,
-        description: imageDescription,
+        image_url,
+        url: urlPath,
+        speakers,
+        level,
+        sessions: getDisplayNameList(Sessions),
+        ...extractSessionsData(sessions.targetItems),
       },
     ];
   }

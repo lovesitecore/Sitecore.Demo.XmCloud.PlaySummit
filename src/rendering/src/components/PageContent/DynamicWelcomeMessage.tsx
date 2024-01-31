@@ -27,7 +27,7 @@ const DynamicWelcomeMessage = (props: ComponentProps): JSX.Element => {
         SetMessage(content.message ? content.message : DEFAULT_MESSAGE)
       )
       .catch(() => SetMessage(DEFAULT_MESSAGE));
-  }, [DEFAULT_MESSAGE, router.locale]);
+  }, [router.locale]);
 
   const messageContent = message && (
     <section className={`section dynamic-welcome-message ${sxaStyles}`}>

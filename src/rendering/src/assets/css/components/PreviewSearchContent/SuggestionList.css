@@ -1,18 +1,16 @@
 .preview-search-content-container {
   .suggestion-list {
-    @apply hidden gap-3 p-8 bg-pink-darkest w-[14rem];
-    @apply xs:flex xs:flex-col;
+    @apply flex flex-col gap-1;
 
     .suggestion-list-title {
-      @apply font-bold whitespace-nowrap text-white;
+      @apply font-bold whitespace-nowrap;
     }
 
     .suggestion-container {
-      @apply flex flex-col gap-3 w-fit;
+      @apply flex flex-col;
 
       .suggestion-item {
-        @apply text-blue bg-white rounded-lg p-2;
-        @apply first-letter:capitalize;
+        @apply text-blue;
       }
     }
   }
