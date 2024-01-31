@@ -1,7 +1,8 @@
 const jssConfig = require('./src/temp/config');
+const { getPublicUrl } = require('@sitecore-jss/sitecore-jss-nextjs/utils');
 const plugins = require('./src/temp/next-config-plugins') || {};
 
-const publicUrl = jssConfig.publicUrl;
+const publicUrl = getPublicUrl();
 
 /**
  * @type {import('next').NextConfig}
@@ -33,7 +34,7 @@ const nextConfig = {
     defaultLocale: jssConfig.defaultLanguage,
     localeDetection: false, // DEMO TEAM CUSTOMIZATION - Disable locale detection
   },
-
+  
   // Enable React Strict Mode
   reactStrictMode: true,
 
@@ -59,7 +60,7 @@ const nextConfig = {
       {
         source: '/sitecore/service/:path*',
         destination: `${jssConfig.sitecoreApiHost}/sitecore/service/:path*`,
-      },
+      }, 
     ];
   },
 };
@@ -67,4 +68,4 @@ const nextConfig = {
 module.exports = () => {
   // Run the base config through any configured plugins
   return Object.values(plugins).reduce((acc, plugin) => plugin(acc), nextConfig);
-};
+}

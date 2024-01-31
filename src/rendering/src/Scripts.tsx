@@ -1,11 +1,9 @@
-// The BYOC bundle imports external (BYOC) components into the app and makes sure they are ready to be used
-import BYOC from 'src/byoc';
+// DEMO TEAM CUSTOMIZATION - Custom path for nextjs-sxa components
 import CdpPageView from 'components/nextjs-sxa/CdpPageView';
 
 const Scripts = (): JSX.Element => {
   return (
     <>
-      <BYOC />
       <CdpPageView />
     </>
   );

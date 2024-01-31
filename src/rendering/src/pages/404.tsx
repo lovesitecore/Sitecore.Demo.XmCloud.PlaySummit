@@ -10,7 +10,6 @@ import { componentBuilder } from 'temp/componentBuilder';
 import Layout from 'src/Layout';
 import { GetStaticProps } from 'next';
 import { siteResolver } from 'lib/site-resolver';
-import clientFactory from 'lib/graphql-client-factory';
 
 const Custom404 = (props: SitecorePageProps): JSX.Element => {
   if (!(props && props.layoutData)) {
@@ -28,9 +27,10 @@ const Custom404 = (props: SitecorePageProps): JSX.Element => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const site = siteResolver.getByName(config.sitecoreSiteName);
+  const site = siteResolver.getByName(config.jssAppName);
   const errorPagesService = new GraphQLErrorPagesService({
-    clientFactory,
+    endpoint: config.graphQLEndpoint,
+    apiKey: config.sitecoreApiKey,
     siteName: site.name,
     language: context.locale || config.defaultLanguage,
     retries:

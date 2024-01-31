@@ -1,5 +1,4 @@
-import { JssConfig } from 'lib/config';
-import { ConfigPlugin } from '..';
+import { ConfigPlugin, JssConfig } from '..';
 import packageConfig from 'package.json';
 
 /**
@@ -12,7 +11,7 @@ class PackageJsonPlugin implements ConfigPlugin {
     if (!packageConfig.config) return config;
 
     return Object.assign({}, config, {
-      sitecoreSiteName: config.sitecoreSiteName || packageConfig.config.appName,
+      jssAppName: config.jssAppName || packageConfig.config.appName,
       graphQLEndpointPath: config.graphQLEndpointPath || packageConfig.config.graphQLEndpointPath,
       defaultLanguage: config.defaultLanguage || packageConfig.config.language,
     });

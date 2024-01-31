@@ -2,16 +2,14 @@ import type { SearchResultsInitialState, SearchResultsWidgetQuery } from '@sitec
 import { WidgetDataType, useSearchResults, widget } from '@sitecore-search/react';
 import Link from 'next/link';
 
+import { ContentSearchSession } from '../../interfaces/contentSearch/ContentSearchSession';
+import { ContentSearchSponsor } from '../../interfaces/contentSearch/ContentSearchSponsor';
+import { ContentSearchVendor } from '../../interfaces/contentSearch/ContentSearchVendor';
 import { getAbsoluteUrlPath } from '../../helpers/UrlHelper';
 
-type PersonalizedPick = {
-  id: string;
+type PersonalizedPick = (ContentSearchSession | ContentSearchSponsor | ContentSearchVendor) & {
+  type: string;
   source_id?: string;
-  type?: string;
-  name?: string;
-  description?: string;
-  url?: string;
-  image_url?: string;
 };
 
 type PersonalizedPicksProps = {
